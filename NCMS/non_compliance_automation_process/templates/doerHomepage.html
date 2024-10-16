@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Doer Home Page</title> 
+    <link rel="stylesheet" href="style.css"> 
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            box-sizing: border-box;
+        }
+
+        .banner {
+            width: 100%;
+            height: 100vh;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.712), rgba(0, 0, 0, 0.534)), url("{% static 'ncImage.jpg' %}");
+            background-position: center; 
+            background-size: cover;
+        }
+
+        .navbar{
+            width: 90%;
+            padding: 30px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            width: 170px; 
+            margin-top: -10px; 
+        }
+
+        .navbar ul li{
+            list-style: none;
+            display: inline-block;
+            margin: 20px;
+        }
+
+        .navbar ul li a{
+            text-decoration: none;
+            text-transform: uppercase;
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+        }
+
+        li a:hover{
+            background: rgb(0, 4, 226); 
+            transition: 0.6s;
+        }
+
+        .navbar a:hover{
+            color: rgba(255, 104, 4, 0.952); 
+        }
+
+        .content{
+            width: 100%;
+            position: absolute;
+            color: white;
+            top: 45%;
+            transform: translateY(-50%); 
+            text-align: left;
+            padding-left: 30px;
+        }
+
+        .content h2{
+            margin-top: 80px;
+            font-size: 60px;
+            font-weight: 800;
+        }
+
+        button {
+            width: 150px; 
+            padding: 10px; 
+            margin: 20px 5px; 
+            text-align: center; 
+            border-radius: 25px; 
+            color: white; 
+            background-color: transparent; 
+            border: 2px solid white; 
+            font-size: 20px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            transition: background-color 0.5s, color 0.5s; 
+        }
+
+        button:hover {
+            background: rgb(0, 4, 226); 
+            border: 2px solid rgb(0, 4, 226); 
+            color: rgba(255, 104, 4, 0.952); 
+        }
+
+        /* responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column; 
+                align-items: center;
+            }
+
+            .navbar ul li {
+                margin: 20px; 
+            }
+
+            .content h2 {
+                font-size: 40px; 
+            }
+
+            .content h3 {
+                font-size: 20px; 
+            }
+
+            button {
+                width: 95px; 
+                font-size: 16px; 
+            }
+        }
+</style>
+</head>
+<body>
+    <div class="banner">
+
+        <!-- Navigation bar -->
+        <div class="navbar">
+            <img class="logo" src="{% static 'logo.png' %}"> 
+            <ul>
+                <li><a href="{% url 'doerHomepage' %}">Home</a></li>
+                <li><a href="{% url 'doerSearchNC' %}">NC</a></li>
+                <li><a href="{% url 'doerProfile' %}">Profile</a></li>
+                <li><a href="{% url 'login' %}">Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            {% if request.session.doerName %}
+            <h2>Welcome Back, {{ request.session.doerName }}</h2> 
+            {% endif %}
+            <h3>Take your responsibilities now!</h3> 
+            <div>
+                <a href="{% url 'doerSearchNC' %}">
+                    <button type="button">Go</button> 
+                </a>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

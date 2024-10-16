@@ -1,0 +1,533 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>DCC create NC Page</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            box-sizing: border-box;
+        }
+
+        .banner {
+            width: 100%;
+            height: 310vh;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.712), rgba(0, 0, 0, 0.534)), url("{% static 'ncImage.jpg' %}");
+            background-size: cover;
+        }
+
+        .navbar {
+            width: 90%;
+            padding: 30px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 10; 
+            position: relative; 
+        }
+
+        .logo {
+            width: 170px;
+            margin-top: -10px; 
+        }
+
+        .navbar ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .navbar ul li {
+            margin: 0 20px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            text-transform: uppercase;
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+        }
+
+        .navbar ul li a:hover {
+            background: rgb(0, 4, 226);
+            transition: 0.6s;
+            color: rgba(255, 104, 4, 0.952);
+        }
+
+        .content {
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            position: absolute;
+            top: 170%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            flex-direction: column; 
+            z-index: 5; 
+        }
+
+        .box {
+            background-color: rgba(75, 73, 73, 0.8);
+            padding: 25px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            margin-left: 20%;
+        }
+
+        .box header {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .box form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            line-height: 1.5rem;
+        }
+
+        .box .input-field {
+            width: 48%;
+            margin-bottom: 20px;
+        }
+
+        .box .input-field input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .box .input-field input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .box .input-field input:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .input-field select {
+            width: 100%;
+            padding: 12px;
+            padding-right: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .input-field select option {
+            background-color: rgba(75, 73, 73, 0.8); 
+            color: white; 
+        }
+
+        .input-field select:hover,
+        .input-field select:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .input-field {
+            position: relative; 
+        }
+
+        button {
+            width: 120px; 
+            padding: 10px; 
+            text-align: center; 
+            border-radius: 25px; 
+            color: white; 
+            background-color: transparent; 
+            border: 2px solid white; 
+            font-size: 18px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        button:hover {
+            background: rgb(0, 4, 226); 
+            border: 2px solid rgb(0, 4, 226); 
+            color: rgba(255, 104, 4, 0.952); 
+        }
+
+        .button-container {
+            margin-left: 82%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nc-title{
+            margin-right: 80%; 
+            margin-bottom: 20px;
+            color: rgba(255, 104, 4, 0.952); 
+        }
+
+        .message{
+            color: rgba(4, 255, 4, 0.952);
+            margin: 10px auto; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 40px; 
+        }
+
+        .input-field textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            resize: vertical;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .input-field textarea:hover,
+        .input-field textarea:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .no-underline {
+            text-decoration: none;
+        }
+
+        /* responsive */
+        @media (max-width: 768px) {
+
+            .banner {
+                height: 328vh;
+            }
+
+            .navbar {
+                flex-direction: column; 
+                align-items: center;
+                z-index: 10; 
+                position: relative;
+            }
+
+            .navbar ul li {
+                margin: 20px; 
+            }
+
+            .content h2 {
+                font-size: 40px; 
+            }
+
+            .content h3 {
+                font-size: 20px; 
+            }
+
+            .box {
+                padding: 30px;
+                width: 80%;
+                margin-top: 25%;
+                margin-left: 80px;
+            }
+
+            .button-container {
+                margin-left: 75%;
+            }
+
+            .message{
+                color: rgba(4, 255, 4, 0.952);
+                margin-top: 10px;
+                margin-left: 28%;
+            }
+        }
+</style>
+    </head>
+<body>
+    <div class="banner">
+
+        <!-- Navigation Bar -->
+        <div class="navbar">
+            <img class="logo" src="{% static 'logo.png' %}" alt="Logo">
+            <ul>
+                <li><a href="{% url 'dccHomepage' %}">Home</a></li>
+                <li><a href="{% url 'dccAction' %}">Action</a></li>
+                <li><a href="{% url 'dccProfile' %}">Profile</a></li>
+                <li><a href="{% url 'login' %}">Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <div class="box">
+                {% if nc_report %}
+                    <div class="message">
+                        <!-- Display the NC ID and division without "NC Report:" -->
+                        NC Report: {{ nc_report.dccID.division.division_id }}/{{ nc_report.id|add:"0000"|slice:"-4:" }}/2024 successfully created
+                    </div>
+                {% endif %}
+            <center>
+                <header>NC Form</header>
+            </center>
+
+                <!-- DCC Details -->
+                <div class="nc-title">
+                    <h3>DCC Details</h3>
+                </div>
+
+                <form action="{% url 'dccCreateNC' %}" method="post">
+                {% csrf_token %}
+
+                <div class="input-field">
+                    <label>DCC Division</label>
+                    <input type="text" name="dcc_division" value="{{ dcc_division }}" readonly>
+                </div>               
+
+                <!-- Doer Details -->
+                <div class="nc-title">
+                    <h3>Doer</h3>
+                </div> 
+                    
+                    <!-- Select doer ID -->
+                    <div class="input-field">
+                        <label for="doerID">Doer ID</label>
+                        <select id="doerID" name="d_doerID" required>
+                            <option value="">Select Doer ID</option>
+                            {% for doer in d_doID %}
+                                <option value="{{ doer.doer_id }}">{{ doer.doer_id }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <br>
+                    <br>
+
+                    <!-- NC details -->
+                    <div class="nc-title">
+                        <h3>NC details</h3>
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="scenario">Scenario</label>
+                        <select id="scenario" name="s_scenarioID">
+                            <option value="">Select one</option>
+                            {% for scenario in s_scenID %}
+                                <option value= {{scenario.scenario_id}}>{{scenario.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="policyName">Policy Name</label>
+                        <input type="text" id="policyName" name="p_policyName" placeholder="Enter Policy Name" readonly>
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="po">Process Owner</label>
+                        <input type="text" id="po" name="p_po" placeholder="Enter Process Owner" readonly>
+                    </div>
+                        
+                    <div class="input-field">
+                        <label for="dateIncident">Date of Incident</label>
+                        <input type="date" id="dateIncident" name="d_dateIncident" placeholder="Enter Date of Incident">
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="typeRef">Type of Reference No</label>
+                        <input type="text" id="typeRef" name="t_typeRef" placeholder="Enter Type of Reference No">
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="refNo">Reference No</label>
+                        <input type="text" id="refNo" name="r_referenceNo" placeholder="Enter Reference No">
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="projectName">Contract/Project Name</label>
+                        <input type="text" id="projectName" name="p_projectName" placeholder="Enter Project Name">
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="accountName">Account Name</label>
+                        <input type="text" id="accountName" name="a_accountName" placeholder="Enter Account Name">
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="poDivision">Process Owner (Division)</label>
+                        <input type="text" id="poDivision" name="p_poDivision" placeholder="Enter Process Owner (Division)">
+                    </div>
+
+                    <br>
+                    <br>
+
+                    <!-- Impact details -->
+                    <div class="nc-title">
+                        <h3>Impact details</h3>
+                    </div>
+
+                    <div>
+                        <img src="{% static 'financialImpact.png' %}" width="100%">
+                    </div>
+            
+                    <br>
+                        
+                    <div>
+                        <img src="{% static 'ncRating.png' %}" width="100%">
+                    </div>
+                    
+        
+                    <div class="input-field">
+                        <br>
+                        <label for="potFi">Potential Financial Impact </label>
+                        <input type="text" id="potFi" name="p_potFi" placeholder="Enter Potential Financial Impact Value">
+                    </div>
+                    
+                    <div class="input-field">
+                        <br>
+                        <label for="nonFi">Non-Financial Impact</label>
+                        <input type="text" id="nonFi" name="n_nonFi" placeholder="Enter Non-Financial Impact">
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="freq">Frequency</label>
+                        <select id="freq" name="f_freq">
+                            <option value="">Select one</option>
+                            <option value="Rare">Rare (1)</option>
+                            <option value="Possible">Possible (2-3 times)</option>
+                            <option value="Almost Certain">Almost Certain (>3 times)</option>
+                        </select>
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="ncRating">NC Rating</label>
+                        <select id="ncRating" name="n_ncRating">
+                            <option value="">Select one</option>
+                            {% for rate in n_ncRate %}
+                                <option value= {{rate.rate_id}}>{{rate.rate_id}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="levImpact">Level of Impact</label>
+                        <input type="text" id="levImpact" name="l_levImpact" placeholder="Enter Level of Impact" readonly>
+                    </div>
+
+                    <div class="input-field" style="display: none;">
+                        <label for="actionn">Consequence Action</label>
+                        <input type="text" id="actionn" name="a_action" placeholder="Enter Action" readonly>
+                    </div>
+
+                    <!-- Scenario details -->
+                     <div class="nc-title">
+                        <h3>Scenario details</h3>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="scenarioDetails">Scenario Details</label>
+                        <textarea id="scenarioDetails" name="s_scenarioDetails" placeholder="Enter Scenario Details"></textarea>
+                    </div>
+        
+                    <div class="button-container">
+                        <br>
+                        <button type="submit" class="btn-submit">Submit</button>
+                        <br>
+                        <br>
+                    </div>
+                </form>
+
+            </div>
+            <br>
+            <center>
+                <a href ="{% url 'dccChooseNC' %}" class="no-underline">
+                    <button>Back</button>
+                </a>
+            </center>
+                </div>
+        
+        </div>
+
+        <!-- script nak show policy lepas pilih scenario id (scneario name) -->
+        <script>
+        $(document).ready(function() {
+            $('#scenario').change(function() {
+                var scenarioID = $(this).val();
+                if (scenarioID) {
+                    $.ajax({
+                        url: '{% url "get_scenario_details" %}',
+                        data: {
+                            'scenario_id': scenarioID
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.error) {
+                                alert('Error: ' + data.error);
+                            } else {
+                                $('#policyName').val(data.policy_name);
+                                $('#po').val(data.process_owner);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert('AJAX request failed: ' + status + ' - ' + error);
+                        }
+                    });
+                } else {
+                    $('#policyName').val('');
+                    $('#po').val('');
+                }
+            });
+        });
+
+        $(document).ready(function() {
+            $('#ncRating').change(function() {
+                var rateID = $(this).val();
+                if (rateID) {
+                    $.ajax({
+                        url: '{% url "get_ncRating_details" %}',
+                        data: {
+                            'rate_id': rateID
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data.error) {
+                                alert('Error: ' + data.error);
+                            } else {
+                                $('#levImpact').val(data.level);
+                                $('#actionn').val(data.action);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert('AJAX request failed: ' + status + ' - ' + error);
+                        }
+                    });
+                } else {
+                    $('#levImpact').val('');
+                    $('#actionn').val('');
+                }
+            });
+        });
+        </script>
+</body>
+</html>
+

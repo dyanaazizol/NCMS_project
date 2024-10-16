@@ -1,0 +1,391 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCC search NC Page</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+* {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            box-sizing: border-box;
+        }
+
+        .banner {
+            width: 100%;
+            height: 130vh;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.712), rgba(0, 0, 0, 0.534)), url("{% static 'ncImage.jpg' %}");
+            background-position: center; 
+            background-size: cover;
+            position: relative; 
+        }
+
+        .navbar {
+            width: 90%;
+            padding: 30px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 10; 
+            position: relative; 
+        }
+
+        .logo {
+            width: 170px;
+            margin-top: -10px; 
+        }
+
+        .navbar ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .navbar ul li {
+            margin: 0 20px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            text-transform: uppercase;
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+        }
+
+        .navbar ul li a:hover {
+            background: rgb(0, 4, 226);
+            transition: 0.6s;
+            color: rgba(255, 104, 4, 0.952);
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; 
+            align-items: center;
+            width: 100%;
+            position: absolute;
+            top: 50%;  
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            z-index: 5;
+        }
+
+        button {
+            width: 120px; 
+            padding: 10px; 
+            text-align: center; 
+            border-radius: 25px; 
+            color: white; 
+            background-color: transparent; 
+            border: 2px solid white; 
+            font-size: 18px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            transition: background-color 0.5s, color 0.5s;
+            line-height: 1.5rem;
+        }
+
+        button:hover {
+            background: rgb(0, 4, 226);
+            border: 2px solid rgb(0, 4, 226);
+            color: rgba(255, 104, 4, 0.952);
+            padding: 10px; 
+        }
+
+        .box {
+            background-color: rgba(75, 73, 73, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            position: relative; 
+            margin-top: 2%;
+        }
+
+
+        .container {
+            max-width: 1440px;
+            width: 100%;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            max-height: 400px; 
+            overflow-y: auto;  
+            box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .container h2 {
+            padding: 2rem 1rem;
+            font-size: 2.5rem;
+            text-align: center;
+            color: white;
+        }
+
+        .input-field select {
+            width: 55%;
+            padding: 12px;
+            padding-right: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .input-field select option {
+            background-color: rgba(75, 73, 73, 0.8); 
+            color: white; 
+        }
+
+        .input-field select:hover,
+        .input-field select:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .tbl {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .tbl thead {
+            background: #4d4d4d;
+            color: #fff;
+            position: sticky; 
+            top: 0;
+            z-index: 2;
+        }
+
+        .tbl thead th {
+            padding: 0.7rem;
+            font-size: 1rem;
+            text-align: center;
+            letter-spacing: 0.1rem;
+            position: sticky;
+            top: 0;
+            background-color: #4d4d4d; 
+            z-index: 2; 
+        }
+
+        .tbl tbody{
+            min-height: 200px; 
+            background-color: rgba(0, 0, 0, 0.233);
+        }
+        .tbl tbody tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .tbl tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .tbl td {
+            padding: 1rem;
+            font-size: 18px;
+            text-align: center;
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .tbl button {
+            border: none;
+            padding: 0.5rem 1.2rem;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .btn_trash {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        .btn_trash:hover {
+            background: #b13527;
+            color: #fff;
+        }
+
+        .btn_view {
+            background: #1e8449;
+            color: #fff;
+        }
+
+        .btn_view:hover {
+            background: #17693a;
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+
+            .banner {
+                height: 150vh;
+            }     
+
+            .navbar {
+                flex-direction: column;
+                align-items: center;
+                z-index: 10;
+                position: relative;
+            }
+
+            .navbar ul li {
+                margin: 18px;
+            }
+
+            .container h2 {
+                font-size: 25px;
+            }
+
+            .box {
+                padding: 20px;
+                align-items: center;
+                width: 50%;
+                margin-top: 25%;
+            }
+
+            .button-container {
+                margin-top: 20px;
+            }
+
+            .tbl thead {
+                display: none;
+            }
+
+            .tbl tr,
+            .tbl td {
+                display: block;
+                width: 100%;
+            }
+
+            .tbl tr {
+                margin-bottom: 1rem;
+                border-radius: 10px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                padding: 1rem;
+            }
+
+            .tbl td {
+                text-align: center;
+                padding: 0.5rem 1rem;
+                position: relative;
+            }
+
+            .tbl td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 50%;
+                padding-left: 1rem;
+                font-weight: bold;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+
+        <!-- Navigation Bar -->
+        <div class="navbar">
+            <img class="logo" src="{% static 'logo.png' %}" alt="Logo">
+            <ul>
+                <li><a href="{% url 'BGCMHomepage' %}">Home</a></li>
+                <li><a href="{% url 'BGCMSearchNC' %}">NC</a></li>
+                <li><a href="{% url 'BGCMProfile' %}">Profile</a></li>
+                <li><a href="{% url 'login' %}">Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <div class="box">
+                <h2>Search NC</h2>
+                <br>
+
+            <!-- Search Form -->
+            <form action="" method="get">
+                <!-- Search Status -->
+                <div class="input-field">
+                    <b>Status:</b>
+                    <select id="status" name="status" required>
+                        <option value="">Select</option>
+                        <option value="completed" {% if request.GET.status == 'completed' %}selected{% endif %}>Completed</option>
+                        <option value="pending_justification" {% if request.GET.status == 'pending_justification' %}selected{% endif %}>Pending Doer Justification</option>
+                        <option value="pending_bgcm" {% if request.GET.status == 'pending_bgcm' %}selected{% endif %}>Pending BGCM Remarks</option>
+                        <option value="pending_hcbd" {% if request.GET.status == 'pending_hcbd' %}selected{% endif %}>Pending HCBD Remarks</option>
+                        <option value="pending_decision" {% if request.GET.status == 'pending_decision' %}selected{% endif %}>Pending Decision</option>
+                        <option value="pending_acknowledgment" {% if request.GET.status == 'pending_acknowledgment' %}selected{% endif %}>Pending Doer Acknowledgment</option>
+                    </select>
+                    <input type="submit" value="Search" class="search-btn">
+                </div>
+            </form>
+        </div>
+        <br>
+        <br>
+
+        <!-- Table display -->
+        <div class="container">
+            <table class="tbl">
+                <thead>
+                    <tr>
+                        <th>NC ID</th>
+                        <th>Doer ID</th>
+                        <th>Date of Incident</th>
+                        <th>Justification</th>
+                        <th>Remarks BGCM</th>
+                        <th>Remarks HCBD</th>
+                        <th>Decision</th>
+                        <th>Acknowledgement</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if list_nc %}
+                        {% for nc in list_nc %}
+                        <tr id="reportRow_{{ nc.id }}">
+                            <td>{{ nc.dccID.division.division_id }}/{{ nc.id|add:"0000"|slice:"-4:" }}/{{ nc.dateIncident|date:"Y" }}</td>
+                            <td>{{ nc.doerID_id }}</td>
+                            <td>{{ nc.dateIncident }}</td>
+                            <td style="color:{% if nc.doerJustification == 'pending..' %}#979797{% else %}white{% endif %};">{{ nc.doerJustification }}</td>
+                            <td style="color:{% if nc.remarksBGCM == 'pending..' %}#979797{% else %}white{% endif %};">{{ nc.remarksBGCM }}</td>
+                            <td style="color:{% if nc.remarksHCBD == 'pending..' %}#979797{% else %}white{% endif %};">{{ nc.remarksHCBD }}</td>
+                            <td style="color:{% if nc.ncDecision == 'pending..' %}#979797{% else %}white{% endif %};">{{ nc.ncDecision }}</td>
+                            <td style="color:{% if nc.acknowledgment == 'pending..' %}#979797{% else %}white{% endif %};">{{ nc.acknowledgment }}</td>
+                            <td style="color:{% if nc.status == 'pending..' %}#979797{% else %}white{% endif %};">{{ nc.status }}</td>
+                            <td>
+                                <a href="{% url 'BGCMViewNC' report_id=nc.id %}">
+                                    <button class="btn_view">View</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="10">No NC reports found. Please perform a search.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</body>
+</html>

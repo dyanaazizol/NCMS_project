@@ -1,0 +1,436 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            box-sizing: border-box;
+        }
+
+        .banner {
+            width: 100%;
+            height: 100vh;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2));
+            background-size: cover;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .navbar {
+            width: 90%;
+            padding: 20px 30px;
+            position: absolute;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            width: 170px;
+        }
+
+        .navbar ul {
+            display: flex;
+        }
+
+        .navbar ul li {
+            list-style: none;
+            margin: 0 15px;
+        }
+
+        .content {
+            text-align: center;
+            color: white;
+            max-width: 800px;
+        }
+
+        .content h1 {
+            font-size: 60px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        button {
+            width: 135px;
+            padding: 15px;
+            margin: 10px;
+            text-align: center;
+            border-radius: 25px;
+            color: white;
+            background-color: transparent;
+            border: 2px solid white;
+            font-size: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        button:hover {
+            background: rgb(0, 4, 226);
+            border: 2px solid rgb(0, 4, 226);
+            color: rgba(255, 104, 4, 0.952);
+        }
+
+        .banner video {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: rgba(75, 73, 73, 0.9);
+            padding: 20px;
+            border: none;
+            width: 80%;
+            max-width: 500px;
+            max-height: 80vh;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+            color: #fff;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: #fff;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: -10px;
+            margin-right: -10px;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #ddd;
+        }
+
+        .role-container p {
+            display: inline-block;
+            margin: 10px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .role-container p:hover {
+            background: rgb(0, 4, 226);
+            color: rgba(255, 104, 4, 0.952);
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            margin-bottom: 15px;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .modal input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .modal input:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .modal button {
+            width: 60%;
+            padding: 12px;
+            margin-top: 20px;
+            text-align: center;
+            border-radius: 25px;
+            color: white;
+            background-color: rgb(0, 4, 226);
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        .modal button:hover {
+            background: rgb(0, 4, 226);
+            color: rgba(255, 104, 4, 0.952);
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            flex: 0 0 100px;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .form-group input {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px; 
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;         
+        }
+
+        .error-message{
+            color: rgb(255, 52, 52);
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <video autoplay loop muted plays-inline>
+            <source src="{% static 'non_compliance_backgroundvid.mp4' %}" type="video/mp4">
+        </video>
+
+        <div class="navbar">
+            <img class="logo" src="{% static 'logo.png' %}" alt="Logo">
+        </div>
+
+        <div class="content">
+            <h1>NCMS</h1>
+            <button type="button" onclick="showLoginForm('doer')">Doer</button>
+            <button type="button" onclick="showLoginForm('dcc')">DCC</button>
+            <button type="button" onclick="showLoginForm('bgcm')">BGCM</button>
+            <button type="button" onclick="showLoginForm('hcbd')">HCBD</button>
+            <button type="button" onclick="showLoginForm('admin')">ADMIN</button>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="loginSection">
+
+                <!-- doer login -->
+                <div id="doer-login-form">
+
+                    {% if error_message %}
+                        <p class="error-message">{{ error_message }}</p>
+                     {% endif %}
+
+                    <h2>Doer Login</h2>
+                    <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <br>
+
+                        <div class="form-group">
+                            <label for="doerID">Staff ID:</label>
+                            <input type="text" id="doerID" name="d_doerID" placeholder="Enter your ID" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="doerPass">Password:</label>
+                            <input type="password" id="doerPass" name="d_doerPass" placeholder="Enter your password (ID)" required>
+                        </div>
+                    
+                        <div class="button-group">
+                            <button type="submit">Login</button>
+                        </div>
+                    </form>
+
+                </div>
+
+                <!-- dcc login -->
+                <div id="dcc-login-form">
+
+                    {% if error_message %}
+                        <p class="error-message">{{ error_message }}</p>
+                     {% endif %}
+
+                    <h2>DCC Login</h2>
+                    <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <br>
+
+                        <div class="form-group">
+                            <label for="dccID">DCC ID:</label>
+                            <input type="text" id="dccID" name="d_dccID" placeholder="Enter your ID" required>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="dccPass">Password:</label>
+                            <input type="password" id="dccPass" name="d_dccPass" placeholder="Enter your password" required>
+                        </div>
+                    
+                        <div class="button-group">
+                            <button type="submit">Login</button>
+                        </div>
+                    </form>
+
+                </div>
+
+                <!-- bgcm login -->
+                <div id="bgcm-login-form">
+
+                    {% if error_message %}
+                        <p class="error-message">{{ error_message }}</p>
+                     {% endif %}
+
+                    <h2>BGCM Login</h2>
+                    <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <br>
+
+                        <div class="form-group">
+                            <label for="bgcmID">BGCM ID:</label>
+                            <input type="text" id="bgcmID" name="b_bgcmID" placeholder="Enter your ID" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bgcmPass">Password:</label>
+                            <input type="password" id="bgcmPass" name="b_bgcmPass" placeholder="Enter your password" required>
+                        </div>
+                    
+                        <div class="button-group">
+                            <button type="submit">Login</button>
+                        </div>
+                    </form>
+
+                </div>
+
+                <!-- hcbd login -->
+                <div id="hcbd-login-form">
+
+                    {% if error_message %}
+                        <p class="error-message">{{ error_message }}</p>
+                     {% endif %}
+
+                    <h2>HCBD Login</h2>
+                    <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <br>
+
+                        <div class="form-group">
+                            <label for="hcbdID">HCBD ID:</label>
+                            <input type="text" id="hcbdID" name="h_hcbdID" placeholder="Enter your ID" required>
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="hcbdPass">Password:</label>
+                            <input type="password" id="hcbdPass" name="h_hcbdPass" placeholder="Enter your password" required>
+                        </div>
+                    
+                        <div class="button-group">
+                            <button type="submit">Login</button>
+                        </div>
+                    </form>
+
+                </div>
+
+                <!-- admin login -->
+                <div id="admin-login-form">
+
+                    {% if error_message %}
+                        <p class="error-message">{{ error_message }}</p>
+                     {% endif %}
+
+                    <h2>ADMIN Login</h2>
+                    <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <br>
+
+                        <div class="form-group">
+                            <label for="adminID">Admin ID:</label>
+                            <input type="text" id="adminID" name="a_adminID" placeholder="Enter your ID" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adminPass">Password:</label>
+                            <input type="password" id="adminPass" name="a_adminPass" placeholder="Enter your password" required>
+                        </div>
+                    
+                        <div class="button-group">
+                            <button type="submit">Login</button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showLoginForm(userType) {
+            // Display modal
+            document.getElementById('myModal').style.display = 'flex';
+    
+            // nak hide semua form dulu
+            document.getElementById('doer-login-form').style.display = 'none';
+            document.getElementById('dcc-login-form').style.display = 'none';
+            document.getElementById('bgcm-login-form').style.display = 'none';
+            document.getElementById('hcbd-login-form').style.display = 'none';
+            document.getElementById('admin-login-form').style.display = 'none';
+    
+            // nak display form based on role
+            if (userType === 'doer') {
+                document.getElementById('doer-login-form').style.display = 'block';
+            } else if (userType === 'dcc') {
+                document.getElementById('dcc-login-form').style.display = 'block';
+            } else if (userType === 'bgcm') {
+                document.getElementById('bgcm-login-form').style.display = 'block';
+            } else if (userType === 'hcbd') {
+                document.getElementById('hcbd-login-form').style.display = 'block';
+            } else if (userType === 'admin') {
+                document.getElementById('admin-login-form').style.display = 'block';
+            }
+        }
+    
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+
+        // nak hide modal time page load
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById("myModal").style.display = "none";
+        });
+        
+    </script>
+
+</body>
+</html>

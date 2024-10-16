@@ -1,0 +1,770 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Doer View NC Page</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            box-sizing: border-box;
+        }
+
+        .banner {
+            width: 100%;
+            height: 450vh;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.712), rgba(0, 0, 0, 0.534)), url("{% static 'ncImage.jpg' %}");
+            background-position: center; 
+            background-size: cover;
+        }
+
+        .navbar {
+            width: 90%;
+            padding: 30px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 10; 
+            position: relative; 
+        }
+
+        .logo {
+            width: 170px;
+            margin-top: -10px; 
+        }
+
+        .navbar ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .navbar ul li {
+            margin: 0 20px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            text-transform: uppercase;
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+        }
+
+        .navbar ul li a:hover {
+            background: rgb(0, 4, 226);
+            transition: 0.6s;
+            color: rgba(255, 104, 4, 0.952);
+        }
+
+        .content {
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            position: absolute;
+            top: 235%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            flex-direction: column; 
+            z-index: 5; 
+        }
+
+        .box {
+            background-color: rgba(75, 73, 73, 0.8);
+            padding: 25px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            margin-left: 20%;
+        }
+
+        .box header {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .box form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 20px; 
+        }
+
+        .box .input-field {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .box .input-field input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .box .input-field input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .box .input-field input:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .input-field select {
+            width: 100%;
+            padding: 12px;
+            padding-right: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .input-field select option {
+            background-color: rgba(75, 73, 73, 0.8); 
+            color: white; 
+        }
+
+        .input-field select:hover,
+        .input-field select:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .input-field {
+            position: relative; 
+        }
+
+        button {
+            width: 120px; 
+            padding: 10px; 
+            text-align: center; 
+            border-radius: 25px; 
+            color: white; 
+            background-color: transparent; 
+            border: 2px solid white; 
+            font-size: 18px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        button:hover {
+            background: rgb(0, 4, 226); 
+            border: 2px solid rgb(0, 4, 226); 
+            color: rgba(255, 104, 4, 0.952); 
+        }
+
+        button:disabled {
+            background-color: grey;
+            border: 2px solid grey;
+            color: white;
+            cursor: not-allowed;
+            opacity: 0.6;
+            transition: none;
+        }
+
+        .button-container {
+            gap: 10px; 
+            height: 45px;
+            margin-top: 25px;
+        }
+
+        #backClarificationButton {
+            margin-left: -50%;  
+        }
+
+        .nc-title {
+            grid-column: span 2; 
+            margin-bottom: 15px;
+            color: rgba(255, 104, 4, 0.952); 
+        }
+
+        .message {
+            grid-column: span 2; 
+            color: rgba(4, 255, 4, 0.952);
+            text-align: center; 
+        }
+
+        .input-field textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            resize: vertical;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .input-field textarea:hover,
+        .input-field textarea:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .nc-status {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .nc-status span {
+            padding: 5px 20px;
+            border-radius: 5px;
+            color: #fff; /* Text color */
+            transition: background-color 0.3s ease; /* Smooth transition */
+        }
+
+        .nc-status span.pending {
+            background-color: rgba(255, 104, 4, 0.952);
+        }
+
+        .nc-status span.completed {
+            background-color: #28a745; /* Green for completed */
+        }
+
+        .alert {
+            opacity: 1; /* Start fully visible */
+            transition: opacity 0.5s ease; /* Smooth transition effect */
+        }
+
+
+        /* responsive */
+        @media (max-width: 768px) {
+
+            .banner {
+                height: 470vh;
+            }
+
+            .navbar {
+                flex-direction: column; 
+                align-items: center;
+                z-index: 10; 
+                position: relative;
+            }
+
+            .navbar ul li {
+                margin: 20px; 
+            }
+
+            .content h2 {
+                font-size: 40px; 
+            }
+
+            .content h3 {
+                font-size: 20px; 
+            }
+
+            .box {
+                padding: 30px;
+                width: 80%;
+                margin-left: 70px;
+            }
+
+            .button-container {
+                display: flex; 
+            }
+
+            .message{
+                color: rgba(4, 255, 4, 0.952);
+                margin-top: 10px;
+                margin-left: 28%;
+            }
+
+            .nc-status{
+                margin-top: 20%;
+            }
+        }
+</style>
+    </head>
+<body>
+    <div class="banner">
+
+        <!-- Navigation Bar -->
+        <div class="navbar">
+            <img class="logo" src="{% static 'logo.png' %}" alt="Logo">
+            <ul>
+                <li><a href="{% url 'doerHomepage' %}">Home</a></li>
+                <li><a href="{% url 'doerSearchNC' %}">NC</a></li>
+                <li><a href="{% url 'doerProfile' %}">Profile</a></li>
+                <li><a href="{% url 'login' %}">Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <br>
+            <center>
+                <div class="nc-status">
+                    <strong>Status:</strong>
+                    <span id="status" class="{{ status|lower }}">{{ status }}</span>
+                </div>
+                </center>
+                <br>
+            <div class="box">
+                <div class="message">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <br>
+                
+                <center>
+                <header>NC Form</header>
+                </center>
+                <!-- Doer Details -->
+                <div class="nc-title">
+                    <h3>Doer Details</h3>
+                </div>
+                <form action="" method="post">
+                {% csrf_token %} 
+                    
+                    <div class="input-field">
+                        <label for="doerID">Doer ID</label>
+                        <input type="text" id="doerID" name="d_doerID" value="{{ doer_id }}" readonly>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="doerName">Doer Name:</label>
+                        <input type="text" id="doerName" name="d_doerName" value="{{ name }}" readonly>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="doerEmail">Doer Email:</label>
+                        <input type="text" id="doerEmail" name="d_doerEmail" value="{{ doer_email }}" readonly>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="doerDiv">Division:</label>
+                        <input type="text" id="doerDiv" name="d_doerDiv" value="{{ division }}" readonly>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="doerPosition">Position:</label>
+                        <input type="text" id="doerPosition" name="d_doerPosition" value="{{ position }}" readonly>
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="dirSupervisor">Direct Supervisor:</label>
+                        <input type="text" id="dirSupervisor" name="d_directSupervisor" value="{{ direct_supervisor }}" readonly>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="doergmHOD">GM/HOD:</label>
+                        <input type="text" id="doergmHOD" name="d_doerGmHOD" value="{{ gm_hod }}" readonly>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="doerUnit">Unit:</label>
+                        <input type="text" id="doerUnit" name="d_doerUnit" value="{{ unit }}" readonly>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="doerState">State:</label>
+                        <input type="text" id="doerState" name="d_doerState" value="{{ state }}" readonly>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="doerSubsidiary">Subsidiary:</label>
+                        <input type="text" id="doerSubsidiary" name="d_doerSubsidiary" value="{{ subsidiary }}" readonly>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="doerLocation">Location:</label>
+                        <input type="text" id="doerLocation" name="d_doerlocation" value="{{ location }}" readonly>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="doerVertical">Vertical/Segment:</label>
+                        <input type="text" id="doerVertical" name="d_doerVerticalSeg" value="{{ vertical }}" readonly>
+                    </div>
+
+                    <br>
+                    <br>
+
+                    <!-- NC details -->
+                    <div class="nc-title">
+                        <h3>NC details</h3>
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="scenarioID">Scenario:</label>
+                        <input type="text" id="scenarioID" name="s_scenarioID" value="{{ scenarioID }}" readonly>
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="policyName">Policy Name</label>
+                        <input type="text" id="policyName" name="p_policyName" value="{{ policy_name }}" readonly>
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="po">Process Owner</label>
+                        <input type="text" id="po" name="p_po" value="{{ process_owner }}" readonly>
+                    </div>
+                        
+                    <div class="input-field">
+                        <label for="dateIncident">Date of Incident</label>
+                        <input type="date" id="dateIncident" name="d_dateIncident" value="{{ dateIncident|date:'Y-m-d' }}" readonly>
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="typeRef">Type of Reference No</label>
+                        <input type="text" id="typeRef" name="t_typeRef" value="{{ typeRef }}" readonly>
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="refNo">Reference No</label>
+                        <input type="text" id="refNo" name="r_referenceNo" value="{{ refNo }}" readonly>
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="projectName">Contract/Project Name</label>
+                        <input type="text" id="projectName" name="p_projectName" value="{{ conProjectName }}" readonly>
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="accountName">Account Name</label>
+                        <input type="text" id="accountName" name="a_accountName" value="{{ accName}}" readonly>
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="poDivision">Process Owner (Division)</label>
+                        <input type="text" id="poDivision" name="p_poDivision" value="{{ poDivision }}" readonly>
+                    </div>
+            
+                    <div class="input-field">
+                        <label for="scenarioDetails">Scenario Details</label>
+                        <textarea id="scenarioDetails" name="s_scenarioDetails" readonly>{{ scenarioDetails }}</textarea>
+                    </div>
+
+                    <br>
+                    <br>
+
+                    <!-- Impact details -->
+                    <div class="nc-title">
+                        <h3>Impact details</h3>
+                    </div>
+
+                    <div>
+                        <img src="{% static 'financialImpact.png' %}" width="100%">
+                    </div>
+            
+                    <br>
+                        
+                    <div>
+                        <img src="{% static 'ncRating.png' %}" width="200%">
+                    </div>
+
+                    <br>
+        
+                    <div class="input-field">
+                        <label for="potFi">Potential Financial Impact </label>
+                        <input type="text" id="potFi" name="p_potFi" value="{{ poFI }}" readonly>
+                    </div>
+                    
+                    <div class="input-field">
+                        <label for="nonFi">Non-Financial Impact</label>
+                        <input type="text" id="nonFi" name="n_nonFi" value="{{ nonFI }}" readonly>
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="freq">Frequency</label>
+                        <input type="text" id="freq" name="f_freq" value="{{ frequency }}" readonly>
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="ncRating">NC Rating</label>
+                        <input type="text" id="ncRating" name="n_ncRating" value="{{ ncRating }}" readonly>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="levImpact">Level of Impact</label>
+                        <input type="text" id="levImpact" name="l_levImpact" value="{{ levelImpact }}" readonly>
+                    </div>
+
+                    <!-- Justification details -->
+                    <div class="nc-title">
+                        <h3>Justification </h3>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="just">Doer's Justification</label>
+                        <textarea id="just" name="j_just" readonly>{{ doerJustification }}</textarea>
+                    </div>
+                    
+                    <!-- Edit button beside justification -->
+                    <div class="button-container">
+                            <button type="button" id="editJustificationButton">Edit</button>
+                            <button type="button" id="backJustificationButton" style="display:none;">Back</button>
+                            <button type="submit" id="saveJustificationButton" style="display:none;">Save</button>
+                    </div>
+        
+                    <!-- Remarks details -->
+                    <div class="nc-title">
+                        <h3>Remarks during clarification and walkthrough</h3>
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="remarksBgcm">Remarks by BGCM</label>
+                        <textarea id="remarksBgcm" name="r_remarksBgcm" readonly>{{ remarksBGCM }}</textarea>
+                    </div>
+                    
+                    <div class="input-field">
+                        <label for="remarksHcbd">Remarks by HCBD</label>
+                        <textarea id="remarksHcbd" name="r_remarksHcbd" readonly>{{ remarksHCBD }}</textarea>
+                    </div>
+
+                    <!-- clarification details -->
+                    <div class="nc-title">
+                        <h3>Remarks during clarification</h3>
+                    </div>
+
+        
+                    <div class="input-field">
+                        <label for="clarificationDate">Clarification Date</label>
+                        <input type="date" id="clarificationDate" name="c_clarificationDate" value="{{ clarificationDate }}" readonly>
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="ncDecision">NC Decision</label>
+                        <textarea id="ncDecision" name="n_ncDecision" readonly>{{ ncDecision }}</textarea>
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="remarksPo">Remarks by Process Owner</label>
+                        <textarea id="remarksPo" name="r_remarksPo" readonly>{{ remarksPO }}</textarea>
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="action">Consequence Action</label>
+                        <textarea id="action" name="a_action"  readonly>{{ action }}</textarea>
+                    </div>
+
+                    <!-- Acknowledge -->
+                    <div class="nc-title">
+                        <h3>Acknowledgement</h3>
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="acknowledge">Doer acknowledgement</label>
+                        <input type="text" id="acknowledge" name="a_acknowledge" value="{{ acknowledgment }}" readonly>
+                    </div>
+        
+                    <br>
+                    </form>
+                    </div>
+                        <br>
+                    <center>
+                        <a href="{% url 'doerSearchNC' %}">
+                            <button class="backbutton">Back</button>
+                        </a>
+                    </center>
+                </div>
+        
+        </div>
+
+        <!-- script nak show policy lepas pilih scenario id (scneario name) -->
+        <script>
+            $(document).ready(function() {
+                $('#scenario').change(function() {
+                    var scenarioID = $(this).val();
+                    if (scenarioID) {
+                        $.ajax({
+                            url: '{% url "get_scenario_details" %}',
+                            data: { 'scenario_id': scenarioID },
+                            dataType: 'json',
+                            success: function(data) {
+                                if (data.error) {
+                                    alert(data.error);
+                                } else {
+                                    $('#policyName').val(data.policy_name);
+                                    $('#po').val(data.process_owner);
+                                }
+                            }
+                        });
+                    } else {
+                        $('#policyName').val('');
+                        $('#po').val('');
+                    }
+                });
+
+                $(document).ready(function() {
+                    $('#ncRating').change(function() {
+                        var rateID = $(this).val();
+                        if (rateID) {
+                            $.ajax({
+                                url: '{% url "get_ncRating_details" %}',
+                                data: {
+                                    'rate_id': rateID
+                                },
+                                dataType: 'json',
+                                success: function(data) {
+                                    if (data.error) {
+                                        alert('Error: ' + data.error);
+                                    } else {
+                                        $('#levImpact').val(data.level);
+                                        $('#actionn').val(data.action);
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    alert('AJAX request failed: ' + status + ' - ' + error);
+                                }
+                            });
+                        } else {
+                            $('#levImpact').val('');
+                            $('#actionn').val('');
+                        }
+                    });
+                });
+            });
+
+            // enable n disable button
+            document.addEventListener("DOMContentLoaded", function (){
+                var statusField = "{{ status }}";
+
+                // button edit
+                var editButton = document.getElementById("editJustificationButton");
+
+                // disable button edit kalau status 'completed'
+                if (statusField === "completed") {
+                    editButton.disabled = true;
+                } else {
+                    // enable button edit kalau status belum completed lagi
+                    if (canEdit) {
+                        editButton.disabled = false;
+                    }
+                }
+            });
+
+            document.getElementById('editJustificationButton').addEventListener('click', function() {
+                var justificationField = document.getElementById('just');
+                var editButton = document.getElementById('editJustificationButton');
+                var backButton = document.getElementById('backJustificationButton');
+                var saveButton = document.getElementById('saveJustificationButton');
+                
+                // Store data asal
+                var originalJustification = justificationField.value;
+
+                if (justificationField.hasAttribute('readonly')) {
+                    // remove readonly untuk allow edit
+                    justificationField.removeAttribute('readonly');
+
+                    // tukar css supaya edit field menonjol
+                    justificationField.style.background = "#f0f8ff";
+                    justificationField.style.color = "#000000";
+                    justificationField.value = "";
+                    justificationField.placeholder = "Enter justification";
+
+                    // display save n back button, hide edit button
+                    editButton.style.display = 'none';
+                    backButton.style.display = 'inline'; 
+                    saveButton.style.display = 'inline';
+                }
+
+                // back button
+                backButton.addEventListener('click', function() {
+                    // tukar ke original 
+                    justificationField.value = originalJustification;
+
+                    // set fields ke readonly balik
+                    justificationField.setAttribute('readonly', 'readonly');
+
+                    // reset css 
+                    justificationField.style.background = "";
+                    justificationField.style.color = "";
+
+                    // display edit button, hide save n back button
+                    editButton.style.display = 'inline';
+                    backButton.style.display = 'none';
+                    saveButton.style.display = 'none';
+                });
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+            const statusElement = document.getElementById('status');
+            const justificationField = document.getElementById('just');
+            const remarksBGCMField = document.getElementById('remarksBgcm');
+            const remarksHCBDField = document.getElementById('remarksHcbd');
+            const decisionField = document.getElementById('ncDecision');
+            const acknowledgmentField = document.getElementById('acknowledge');
+            
+            // Function to update the status based on field values
+            function updateStatus() {
+                if (acknowledgmentField.value !== "pending..") {
+                    statusElement.textContent = "Completed";
+                } else if (decisionField.value !== "pending..") {
+                    statusElement.textContent = "Pending doer acknowledgment";
+                } else if (remarksHCBDField.value !== "pending..") {
+                    statusElement.textContent = "Pending decision-clarification date-remarks PO";
+                } else if (remarksBGCMField.value !== "pending..") {
+                    statusElement.textContent = "Pending remarks HCBD";
+                } else if (justificationField.value !== "pending..") {
+                    statusElement.textContent = "Pending remarks BGCM";
+                } else {
+                    statusElement.textContent = "Pending doer justification";
+                }
+            }
+
+            // Update the status initially when the page loads
+            updateStatus();
+
+            // Add event listeners to the fields to detect changes
+            justificationField.addEventListener('input', updateStatus);
+            remarksBGCMField.addEventListener('input', updateStatus);
+            remarksHCBDField.addEventListener('input', updateStatus);
+            decisionField.addEventListener('input', updateStatus);
+            acknowledgmentField.addEventListener('input', updateStatus);
+
+            // Optionally, you can also update the status when the form is submitted
+            const form = document.getElementById('ncForm');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent form submission for demo purposes
+                updateStatus();
+                // You can then send the form data via AJAX or proceed with form submission
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+        // Select all alert elements
+        const alerts = document.querySelectorAll('.alert');
+        // Loop through each alert
+        alerts.forEach(alert => {
+            // Set a timeout to remove the alert after 3 seconds (3000 milliseconds)
+            setTimeout(() => {
+                alert.style.transition = 'opacity 0.5s ease'; // Smooth transition
+                alert.style.opacity = 0; // Fade out
+                setTimeout(() => {
+                    alert.remove(); // Remove from DOM after fading out
+                }, 50); // Wait for the fade out to complete before removing
+            }, 1000); // Time before hiding (3 seconds)
+        });
+    });
+
+                
+    </script>
+</body>
+</html>

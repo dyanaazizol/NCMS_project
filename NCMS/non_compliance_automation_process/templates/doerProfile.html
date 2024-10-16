@@ -1,0 +1,223 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doer Profile Page</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            box-sizing: border-box;
+        }
+
+        .banner {
+            width: 100%;
+            height: 130vh;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.712), rgba(0, 0, 0, 0.534)), url("{% static 'ncImage.jpg' %}");
+            background-position: center; 
+            background-size: cover;
+        }
+
+        .navbar{
+            width: 90%;
+            padding: 30px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 10; 
+            position: relative; 
+        }
+
+        .logo {
+            width: 170px; 
+            margin-top: -10px; 
+        }
+
+        .navbar ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .navbar ul li {
+            margin: 0 20px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            text-transform: uppercase;
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+        }
+
+        .navbar ul li a:hover {
+            background: rgb(0, 4, 226);
+            transition: 0.6s;
+            color: rgba(255, 104, 4, 0.952);
+        }
+
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            position: absolute;
+            top: 77%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            flex-direction: column; 
+            z-index: 5; 
+        }
+
+        .box {
+            background-color: rgba(75, 73, 73, 0.85);
+            padding: 40px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 40%;
+            max-width: 500px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .profile-info {
+            text-align: left;
+            font-size: 1rem;
+            line-height: 1.5rem;
+            width: 100%;
+        }
+
+        .profile-info .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .profile-info .form-group label {
+            display: block;
+        }
+
+        .profile-info .form-group input:disabled {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .profile-info .form-group input:disabled:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .banner video {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .profile-info img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.7);
+        }
+
+        /* Responsive styling */
+        @media (max-width: 768px) {
+
+            .navbar {
+                flex-direction: column;
+                align-items: center;
+                z-index: 10; 
+                position: relative;
+            }
+
+            .navbar ul li {
+                margin: 20px;
+            }
+
+            .box {
+                padding: 20px;
+                width: 80%;
+                margin-top: 15%;
+            }
+
+            .box h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+
+        <!-- Navigation Bar -->
+        <div class="navbar">
+            <img class="logo" src="{% static 'logo.png' %}" alt="Logo">
+            <ul>
+                <li><a href="{% url 'doerHomepage' %}">Home</a></li>
+                <li><a href="{% url 'doerSearchNC' %}">NC</a></li>
+                <li><a href="{% url 'doerProfile' %}">Profile</a></li>
+                <li><a href="{% url 'login' %}">Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <div class="box">
+
+                <h2>Your Profile</h2>
+                <br>
+                <div class="profile-info">
+                <form action="" method="post">
+                {% csrf_token %}
+
+                    <center>
+                    <img src="{% static 'profile.png' %}" alt="Profile Picture">
+                    </center>
+
+                    <div class="form-group">
+                        <label>ID</label>
+                        <input type="text" name="DoerID" value="{{ doer.doer_id }}" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="DoerName" value="{{ doer.name }}" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Division</label>
+                        <input type="text" name="DoerDivision" value="{{ doer.division }}" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" name="DoerEmail" value="{{ doer.doer_email }}" disabled>
+                    </div>
+                </form>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,379 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCC add Doer Page</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            box-sizing: border-box;
+        }
+
+        .banner {
+            width: 100%;
+            height: 170vh;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.712), rgba(0, 0, 0, 0.534)), url("{% static 'ncImage.jpg' %}");
+            background-position: center; 
+            background-size: cover;
+        }
+
+        .navbar {
+            width: 90%;
+            padding: 30px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 10; 
+            position: relative; 
+        }
+
+        .logo {
+            width: 170px;
+            margin-top: -10px; 
+        }
+
+        .navbar ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .navbar ul li {
+            margin: 0 20px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            text-transform: uppercase;
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+        }
+
+        .navbar ul li a:hover {
+            background: rgb(0, 4, 226);
+            transition: 0.6s;
+            color: rgba(255, 104, 4, 0.952);
+        }
+
+        .content {
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            position: absolute;
+            top: 95%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            flex-direction: column; 
+            z-index: 5; 
+        }
+
+        .box {
+            background-color: rgba(75, 73, 73, 0.8);
+            padding: 25px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            margin-left: 20%;
+        }
+
+        .box header {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .box form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            line-height: 1.5rem;
+            margin-bottom: 40px; 
+        }
+
+        .box .input-field {
+            width: 48%;
+            margin-bottom: 20px;
+        }
+
+        .box .input-field input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .box .input-field input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .box .input-field input:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .input-field select {
+            width: 100%;
+            padding: 12px;
+            padding-right: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        .input-field select option {
+            background-color: rgba(75, 73, 73, 0.8); 
+            color: white; 
+        }
+
+        .input-field select:hover,
+        .input-field select:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .input-field {
+            position: relative; 
+        }
+
+        button {
+            width: 120px; 
+            padding: 10px; 
+            text-align: center; 
+            border-radius: 25px; 
+            color: white; 
+            background-color: transparent; 
+            border: 2px solid white; 
+            font-size: 18px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        button:hover {
+            background: rgb(0, 4, 226); 
+            border: 2px solid rgb(0, 4, 226); 
+            color: rgba(255, 104, 4, 0.952); 
+        }
+
+        .banner video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 213%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        #loginLink {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .button-container {
+            margin-left: 82%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nc-title{
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .success-message {
+            color: rgba(4, 255, 4, 0.952);
+            margin: 10px auto; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 40px;
+        }
+
+        .error-message {
+            color: red;
+            margin: 10px auto; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 40px;
+        }
+
+
+        /* responsive */
+        @media (max-width: 768px) {
+
+            .banner {
+                height: 179vh;
+            }
+
+            .navbar {
+                flex-direction: column; 
+                align-items: center;
+                z-index: 10; 
+                position: relative;
+            }
+
+            .navbar ul li {
+                margin: 20px; 
+            }
+
+            .content h2 {
+                font-size: 40px; 
+            }
+
+            .content h3 {
+                font-size: 20px; 
+            }
+
+            .box {
+                padding: 30px;
+                width: 70%;
+                margin-top: 20%;
+                margin-left: 95px;
+            }
+
+            .button-container {
+                margin-left: 36%;
+            }
+        }
+</style>
+    </head>
+<body>
+    <div class="banner">
+
+        <div class="navbar">
+            <img class="logo" src="{% static 'logo.png' %}" alt="Logo">
+            <ul>
+                <li><a href="{% url 'dccHomepage' %}">Home</a></li>
+                <li><a href="{% url 'dccAction' %}">Action</a></li>
+                <li><a href="{% url 'dccProfile' %}">Profile</a></li>
+                <li><a href="{% url 'login' %}">Logout</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <div class="box">
+                <div class="message {% if message == 'Doer with this ID already exists' %}error-message{% else %}success-message{% endif %}">
+                    {{ message }}
+                </div>
+                <div class="nc-title">
+                    <h3>Enter Doer Details</h3>
+                </div>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    
+                    <div class="input-field">
+                        <label for="doerId">ID:</label>
+                        <input type="text" id="doerID" name="d_doerID" placeholder="Enter Doer ID" required>
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="doerName">Doer Name:</label>
+                        <input type="text" id="doerName" name="d_doerName" placeholder="Enter Doer Name" required>
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="doerPass">Create password:</label>
+                        <input type="password" id="doerPass" name="d_doerPass" placeholder="Create Doer password" required>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="doerEmail">Email:</label>
+                        <input type="text" id="doerEmail" name="d_doerEmail" placeholder="Enter Doer Email" required>
+                    </div>
+                
+                    <!-- Select division -->
+                    <div class="input-field">
+                        <label for="doerDivision">Division</label>
+                        <select id="doerDivision" name="d_doerDivision" required>
+                            <option value="">Select Doer Division</option>
+                            {% for division in d_divisionID %}
+                                <option value="{{ division.division_id }}">{{ division.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="doerPosition">Position:</label>
+                        <input type="text" id="doerPosition" name="d_doerPosition" placeholder="Enter Doer Position" required>
+                    </div>
+                
+                    <div class="input-field">
+                        <label for="dirSupervisor">Direct Supervisor:</label>
+                        <input type="text" id="dirSupervisor" name="d_directSupervisor" placeholder="Enter Doer Direct Supervisor" required>
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="doergmHOD">GM/HOD:</label>
+                        <input type="text" id="doergmHOD" name="d_doerGmHOD" placeholder="Enter Doer GM/HOD" required>
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="doerUnit">Unit:</label>
+                        <input type="text" id="doerUnit" name="d_doerUnit" placeholder="Enter Doer Unit" required>
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="doerState">State:</label>
+                        <input type="text" id="doerState" name="d_doerState" placeholder="Enter Doer State" required>
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="doerSubsidiary">Subsidiary:</label>
+                        <input type="text" id="doerSubsidiary" name="d_doerSubsidiary" placeholder="Enter Doer Subsidiary" required>
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="doerLocation">Location:</label>
+                        <input type="text" id="doerLocation" name="d_doerlocation" placeholder="Enter Doer location" required>
+                    </div>
+        
+                    <div class="input-field">
+                        <label for="doerVertical">Vertical/Segment:</label>
+                        <input type="text" id="doerVertical" name="d_doerVerticalSeg" placeholder="Enter Doer Vertical/Segment" required>
+                    </div>
+                
+                    <div class="button-container">
+                        <br>
+                        <button type="submit" class="btn-submit">Add</button>
+                    </div>
+                </form>
+            </div>
+        
+
+            <center>
+            <br>
+            <a href ="{% url 'dccAction' %}">
+                <button>Back</button>
+            </a>
+            </center>
+        </div>
+        
+        <br>
+    </div>
+
+</body>
+</html>

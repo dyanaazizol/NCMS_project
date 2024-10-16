@@ -1,0 +1,1 @@
+web: gunicorn NCMS.wsgi --log-file -
